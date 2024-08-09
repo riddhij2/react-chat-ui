@@ -106,7 +106,7 @@ const Register = () =>{
                 <TextField 
                     fullWidth 
                     id="name" 
-                    label="Fullname" 
+                    label="Name" 
                     variant="outlined" 
                     sx={{mb:3}}
                     {...register('name',{

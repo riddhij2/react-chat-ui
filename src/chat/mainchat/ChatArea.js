@@ -51,7 +51,7 @@ function ChatArea() {
       <ListItem sx={{flexDirection: "row-reverse", mb: 2}}>
             <Box sx={{display:"flex", width: "80%", flexDirection: "row-reverse"}}>
         <ListItemAvatar sx={{display:"flex", flexDirection: "row-reverse"}}>
-          <Avatar alt="Remy Sharp" src ="https://mui.com/static/images/avatar/3.jpg" />
+          <Avatar alt="Remy Sharp" src ="https://mui.com/static/images/avatar/2.jpg" />
         </ListItemAvatar>
           <Paper 
             sx ={{
