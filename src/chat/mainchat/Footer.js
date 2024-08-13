@@ -1,10 +1,25 @@
 import { Box, Button, TextField } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import  InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
 
-function Footer() {
+function Footer({ handleSendMsg }) {
+    const [msg, setMsg] = useState("");
+    const handleChange = (event) =>{
+        //set the text msg
+        setMsg(event.target.value)
+    }
+    const handleSubmit =(event) =>{
+        //to prevent the refersh of page after submission
+        event.preventDefault();
+        if(msg){
+            handleSendMsg(msg);
+        }
+        //to empty the input box
+        setMsg("");
+        
+    }
   return (
     <Box sx={{p:1 , display: "flex"}}>
         <Box sx={{display: "flex", alignItems: "center "}}>
@@ -17,8 +32,13 @@ function Footer() {
         </Button>
         </Box>
        
-        <Box sx={{display:"flex", flex: 1}}>
-        <TextField fullWidth
+        <Box 
+            sx={{display:"flex", flex: 1}} 
+            component="form"
+            //submit the textmessage
+            onSubmit={handleSubmit}>
+        <TextField 
+         fullWidth
          placeholder='Type your message and hit send'
          size="small"
          sx={{"& .MuiInputBase-root": {
@@ -26,9 +46,14 @@ function Footer() {
             borderRight: 0
             },
          }} 
+         //to empty the text input
+         value={msg}
+         //set text in the message to send the server 
+         onChange={handleChange}
          
          />
         <Button 
+            type='submit'
             variant='outlined'
             sx={{
                 borderRadius: 0,

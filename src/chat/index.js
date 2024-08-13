@@ -13,9 +13,15 @@ const Chat =() =>{
     const socketRef = useRef();
     const [isConnected, setIsConnected] = useState(false);
     const [onlineUsers, setOnlineUsers] = useState([]);
+    const [allMsg, setAllMsg] = useState([])
+    const [roomData, setRoomData] = useState({
+      roomData: null,
+      receiver: null
+    });
+
 
     const { state } = useLocation();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     // console.log(state.name);
     useEffect(() => {
@@ -35,21 +41,47 @@ const Chat =() =>{
         socketRef.current.on("USER_ADDED", (data) =>{
             // console.log("data", data)
             setOnlineUsers(data)
+        });
+        socketRef.current.on("RECEIVED_MSG", (data) =>{
+          console.log(data, "from another user")
+          setAllMsg((prevState) => [...prevState, data])
         })
+        //when the online user logout it is removed from chatlist
+        return () => socketRef.current.disconnect();
 
       }
     
       
     }, [isConnected])
-    
-    
 
+    const handleSendMsg = (msg) =>{
+      if(socketRef.current.connected){
+        const data ={
+          msg, 
+          receiver: roomData.receiver,
+          sender: state,
+        }
+        socketRef.current.emit("SEND_MSG", data)
+        setAllMsg((prevState) => [...prevState, data])
+
+      }
+    };
+   
     if(!state) return null;
 
     return(
         <Paper square elevation={0} sx={{height: "100vh", display:"flex"}}>
-            <SideBar user ={state} onlineUsers= {onlineUsers}/>
-            <ChatBox />
+            <SideBar 
+                user ={state} 
+                onlineUsers= {onlineUsers} 
+                roomData = {roomData}
+                setRoomData ={setRoomData}/>
+            <ChatBox 
+                roomData ={roomData} 
+                handleSendMsg ={handleSendMsg}
+                allMsg={allMsg}
+                user ={state} 
+                />
             <Profile user ={state} />
         </Paper>
     )

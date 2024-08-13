@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 export default function Profile({ user }) {
   const navigate = useNavigate();
   const logout = ()=>{
-    // localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    // sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
     navigate("/")
   }
   return (

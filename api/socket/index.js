@@ -38,7 +38,7 @@ const socketInit = (server) => {
       const isSaved = await saveMsg(msg);
       io.to(msg.receiver.socketId)
         .to(msg.sender.socketId)
-        .emit('RECEIVED_MSG', isSaved);
+        .emit('RECEIVED_MSG', msg);//change msg into isSaved afterwards
     });
 
     socket.on('DELETE_MSG', (msg) => {

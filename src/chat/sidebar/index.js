@@ -5,13 +5,22 @@ import PersonIcon from '@mui/icons-material/Person';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 
-const SideBar= ({ user, onlineUsers }) =>{
-  console.log("onlineUser:", onlineUsers)
+const SideBar= ({ user, onlineUsers, roomData, setRoomData }) =>{
+  // console.log("onlineUser:", onlineUsers)
 
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue)
+    }
+
+    const handleChatRoom = (user) =>{
+      setRoomData({
+        ...roomData,
+        room: "test",
+        receiver: user,
+      })
+
     }
     return (
    <Box sx={{width: "25vw", display:"flex", flexDirection: "column", height: "100vh"}}>
@@ -44,7 +53,7 @@ const SideBar= ({ user, onlineUsers }) =>{
               // console.log("Item:", item);
              return( 
             <React.Fragment key={item.userId}>
-              <ListItem alignItems="flex-start">
+              <ListItem alignItems="flex-start" onClick={() => handleChatRoom(item)}>
                 <ListItemAvatar>
                   <Avatar alt={item.name} src="/static/images/avatar/1.jpg" />
                 </ListItemAvatar>

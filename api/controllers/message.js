@@ -7,7 +7,7 @@ const saveMsg = async (req, res, next) => {
     const savedMsg = await saveMessage(data);
     res.status(201).json({ message: 'Message saved', data: savedMsg });
   } catch (error) {
-    next(error);
+    // next(error);
   }
 };
 
