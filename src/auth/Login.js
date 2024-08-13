@@ -17,7 +17,7 @@ const Login = () =>{
       formState: { errors },
     } = useForm();
     
-    const isUserExist = localStorage.getItem("user")
+    const isUserExist = sessionStorage.getItem("user")
     useEffect(() => {
        if(isUserExist) navigate("/app", {state: JSON.parse(isUserExist)})
     },[])
@@ -27,10 +27,10 @@ const Login = () =>{
       axios
       .post("http://localhost:5000/auth/login", data)
       .then((res) => {
-        localStorage.setItem('token',res.data.token)
+        sessionStorage.setItem('token',res.data.token)
         // console.log(res.data.token)
         const user = jwtDecode(res.data.token);
-        localStorage.setItem('user', JSON.stringify(user))
+        sessionStorage.setItem('user', JSON.stringify(user))
 
         navigate("/app", {state: user})
       })

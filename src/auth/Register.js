@@ -20,7 +20,7 @@ const Register = () =>{
     formState: { errors },
   } = useForm();
 
-  const isUserExist = localStorage.getItem("user")
+  const isUserExist = sessionStorage.getItem("user")
     useEffect(() => {
        if(isUserExist) navigate("/app", {state: JSON.parse(isUserExist)})
     },[])
@@ -29,10 +29,10 @@ const Register = () =>{
     axios
     .post("http://localhost:5000/auth/register", data)
     .then((res) => {
-      localStorage.setItem('token',res.data.token)
+      sessionStorage.setItem('token',res.data.token)
       const user = jwtDecode(res.data.token);
 
-      localStorage.setItem('user', JSON.stringify(user))
+      sessionStorage.setItem('user', JSON.stringify(user))
       navigate("/")
     })
     .catch((err) => {
