@@ -3,22 +3,42 @@ import Header from "./Header";
 import { Avatar, Box, Divider, List, ListItem, ListItemAvatar, ListItemText, Tab, Tabs, Typography } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import axios from "axios";
 
 
-const SideBar= ({ user, onlineUsers, roomData, setRoomData }) =>{
+const SideBar= ({ user, onlineUsers, roomData, setRoomData, setAllMsg }) =>{
   // console.log("onlineUser:", onlineUsers)
 
     const [value, setValue] = React.useState(0);
+    const [selectedMessageId, setSelectedMessageId] = React.useState(null);
 
     const handleChange = (event, newValue) => {
         setValue(newValue)
     }
 
     const handleChatRoom = (user) =>{
+      console.log("user", user)
       setRoomData({
         ...roomData,
         room: "test",
-        receiver: user,
+        receiver: {
+          ...user, 
+          userId: user.userId // Explicitly include userId
+        }
+      });
+      axios
+      .get(`http://localhost:5000/message/${user.userId}`)
+      .then((res) => {
+        console.log("res",res)
+        if (res.data.data) {
+          // Update the selected message ID and other state as needed
+          setSelectedMessageId(res.data.data.id);
+          setAllMsg(res.data.data); // Assuming res.data.data contains the message data
+        }
+
+      })
+      .catch((err) =>{
+        console.log(err)
       })
 
     }
@@ -50,7 +70,7 @@ const SideBar= ({ user, onlineUsers, roomData, setRoomData }) =>{
             onlineUsers
             .filter((ele) => ele.userId !== user.userId)
             .map((item) => {
-              // console.log("Item:", item);
+              console.log("Item:", item);
              return( 
             <React.Fragment key={item.userId}>
               <ListItem alignItems="flex-start" onClick={() => handleChatRoom(item)}>

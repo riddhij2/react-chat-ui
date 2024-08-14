@@ -21,6 +21,7 @@ const Chat =() =>{
 
 
     const { state } = useLocation();
+    // console.log('Initial State (Sender):', state);
     const navigate = useNavigate();
 
     // console.log(state.name);
@@ -44,6 +45,9 @@ const Chat =() =>{
         });
         socketRef.current.on("RECEIVED_MSG", (data) =>{
           console.log(data, "from another user")
+          console.log("Received Data:", data);
+          console.log("Sender:", data.sender); 
+          console.log("Receiver:", data.receiver);
           setAllMsg((prevState) => [...prevState, data])
         })
         //when the online user logout it is removed from chatlist
@@ -55,11 +59,13 @@ const Chat =() =>{
     }, [isConnected])
 
     const handleSendMsg = (msg) =>{
+      console.log('Reciever State:', roomData.receiver); 
+      console.log('sender State:', state); 
       if(socketRef.current.connected){
         const data ={
           msg, 
-          receiver: roomData.receiver,
-          sender: state,
+          receiver: { ...roomData.receiver }, // Cloning to prevent mutations
+          sender: { ...state },               // Cloning to prevent mutations
         }
         socketRef.current.emit("SEND_MSG", data)
         setAllMsg((prevState) => [...prevState, data])
@@ -75,7 +81,9 @@ const Chat =() =>{
                 user ={state} 
                 onlineUsers= {onlineUsers} 
                 roomData = {roomData}
-                setRoomData ={setRoomData}/>
+                setRoomData ={setRoomData}
+                setAllMsg = {setAllMsg}
+                />
             <ChatBox 
                 roomData ={roomData} 
                 handleSendMsg ={handleSendMsg}

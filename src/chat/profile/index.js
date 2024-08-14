@@ -13,7 +13,7 @@ export default function Profile({ user }) {
     <Box 
        sx={{
         bgcolor: "#eee", 
-        width: "25vw", 
+        width: "20vw", 
         display: "flex", 
         flexDirection: "column",
         justifyContent: "center",

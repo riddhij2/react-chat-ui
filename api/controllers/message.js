@@ -1,13 +1,15 @@
 const { saveMessage, findMessagesByUserId, deleteMessageById } = require('../models/message');
 
-const saveMsg = async (req, res, next) => {
-  const data = req.body;
-
+const saveMsg = async (data) => {
+  console.log('Data to be saved:', data);  // Log the message data
+ 
+  
   try {
     const savedMsg = await saveMessage(data);
-    res.status(201).json({ message: 'Message saved', data: savedMsg });
+    return { success: true, data: savedMsg };
   } catch (error) {
-    // next(error);
+    console.error('Error saving message:', error);
+    return { success: false, error };
   }
 };
 

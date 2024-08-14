@@ -11,7 +11,7 @@ export default function Header({ user }) {
         }}>
     <CardHeader
       avatar={
-        <Avatar src ="https://mui.com/static/images/avatar/3.jpg">
+        <Avatar src ="/static/images/avatar/3.jpg">
         </Avatar>
       }
       action={

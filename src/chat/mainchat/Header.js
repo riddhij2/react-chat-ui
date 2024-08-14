@@ -21,7 +21,7 @@ export default function Header({ roomData }) {
             <ArrowBackIcon />
         </Button>
         
-        <Avatar src ="https://mui.com/static/images/avatar/1.jpg">
+        <Avatar src ="/static/images/avatar/1.jpg">
         </Avatar>
         </>
       }
