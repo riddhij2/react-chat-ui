@@ -7,7 +7,33 @@ const saveMessage = async (data) => {
     'INSERT INTO messages (msg, sender_id, sender_name, sender_email, receiver_id, receiver_name, receiver_email) VALUES (?, ?, ?, ?, ?, ?, ?)',
     [data.msg, data.sender.userId, data.sender.name, data.sender.email, data.receiver.userId, data.receiver.name, data.receiver.email]
   );
-  return result;
+   // Fetch the ID of the inserted message
+   const messageId = result.insertId;
+
+   console.log('Inserted Message:', {
+    id: messageId,
+    msg: data.msg,
+    sender_id: data.sender.userId,
+    sender_name: data.sender.name,
+    sender_email: data.sender.email,
+    receiver_id: data.receiver.userId,
+    receiver_name: data.receiver.name,
+    receiver_email: data.receiver.email,
+    created_at: new Date().toISOString()
+  });
+
+   // Return the message data including the ID
+   return {
+     id: messageId,
+     msg: data.msg,
+     sender_id: data.sender.userId,
+     sender_name: data.sender.name,
+     sender_email: data.sender.email,
+     receiver_id: data.receiver.userId,
+     receiver_name: data.receiver.name,
+     receiver_email: data.receiver.email,
+     created_at: new Date().toISOString() // Optional: Add creation timestamp
+   };
 };
 
 const findMessagesByUserId = async (userId) => {

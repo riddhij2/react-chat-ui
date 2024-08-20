@@ -4,7 +4,7 @@ import Header from './Header'
 import ChatArea from './ChatArea'
 import Footer from './Footer'
 
-export default function ChatBox({ roomData, handleSendMsg, allMsg, user }) {
+export default function ChatBox({ roomData, handleSendMsg, allMsg, user, handleDelete }) {
   return (
     <Box sx={{width: "55vw",display:"flex", height: "100%" ,flexDirection: "column"}}>
         
@@ -13,6 +13,7 @@ export default function ChatBox({ roomData, handleSendMsg, allMsg, user }) {
         <ChatArea 
           allMsg = {allMsg} 
           user={user}
+          handleDelete ={handleDelete}
         />
         <Footer handleSendMsg = {handleSendMsg}/>
         </> : <> 

@@ -29,13 +29,14 @@ const getMsg = async (req, res, next) => {
 
 const delMsg = async (req, res, next) => {
   const id = req.params.id;
+  
 
   try {
     if (!id) {
-      return res.status(400).json({ msg: 'Message ID required.' });
+      return res.status(400).json({ msg: 'User Id required.' });
     }
-    await deleteMessageById(id);
-    res.json({ msg: 'Message deleted' });
+    const delMsg = await deleteMessageById(id);
+    res.json({ data: delMsg, msg: 'Message deleted' });
   } catch (error) {
     next(error);
   }

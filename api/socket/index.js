@@ -35,10 +35,15 @@ const socketInit = (server) => {
     });
     socket.on('SEND_MSG', async (msg) => {
       console.log(msg, 'MSG FROM FRONTEND');
+      
+      // Save the message and get the result including the ID
       const isSaved = await saveMsg(msg);
+      console.log(isSaved, 'Message saved with ID'); // Ensure isSaved contains the ID
+  
+      // Emit the saved message to the appropriate sockets
       io.to(msg.receiver.socketId)
         .to(msg.sender.socketId)
-        .emit('RECEIVED_MSG', msg);//change msg into isSaved afterwards
+        .emit('RECEIVED_MSG', isSaved); // Send the result to the frontend
     });
 
     socket.on('DELETE_MSG', (msg) => {

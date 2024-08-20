@@ -3,8 +3,9 @@ import React from 'react'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ReplyIcon from '@mui/icons-material/Reply';
 
-function ChatArea({ allMsg, user }) {
-  console.log(allMsg)
+function ChatArea({ allMsg, user, handleDelete }) {
+  console.log("allMsg", allMsg)
+  console.log("user", user)
   return (
     <Box sx={{flex:"1 0 0", overflowY: "auto", bgcolor: "#f9f9f9"}}>
         <Stack direction="row" justifyContent="center" 
@@ -14,24 +15,25 @@ function ChatArea({ allMsg, user }) {
         <List sx= {{p:0, overflowY: "auto", flex: "1 0 0"}}>
           {allMsg.map((item) => (
             
-            <ListItem sx= {
-              item.sender_id === user.userId
+            <ListItem  
+            key={item.id}  
+            sx= {item.sender_id === user.userId
                 ? {flexDirection: "row-reverse", mb: 2} 
                 : {mb: 2}
               }
             >
-            <Box sx={
-              item.sender_id === user.userId 
+            <Box sx={item.sender_id === user.userId 
                 ? {display:"flex", width: "80%" , flexDirection: "row-reverse"} 
                 : {display:"flex", width: "80%"}
               }
             >
         <ListItemAvatar sx={item.sender_id === user.userId 
-            && {display:"flex", flexDirection: "row-reverse"}
-            }
+           ? { display: "flex", flexDirection: "row-reverse" } 
+           : {}  // Provide an empty object if the condition is false
+         }
         >
         <Avatar 
-            alt={item.name}  
+            alt={item.sender_name}  
             src ="/static/images/avatar/1.jpg" />
         </ListItemAvatar>
           <Paper sx ={item.sender_id === user.userId 
@@ -40,8 +42,7 @@ function ChatArea({ allMsg, user }) {
               }
           >
           <ListItemText
-           sx={
-              item.sender_id === user.userId 
+           sx={item.sender_id === user.userId 
               ? {m:0, color: "primary.contrastText"} 
               : {m:0}
             }
@@ -55,20 +56,20 @@ function ChatArea({ allMsg, user }) {
           />
            <Box sx= {{ mt: 1, display:"flex", alignItems: "center",justifyContent: "space-between"}}>
             <Typography variant='caption'
-            sx={
-              item.sender_id === user.userId 
-              && 
-              {color: "primary.contrastText"
-              }}>
+             sx={item.sender_id === user.userId 
+              ? { color: "primary.contrastText" } 
+              : {}  
+            }
+              >
                 12:20 PM
             </Typography>
             <Box>
-             <IconButton size ="small">
+             {/* <IconButton size ="small">
                <ReplyIcon fontSize ="small" />
              </IconButton>
-             <IconButton size ="small" color='error'>
+             <IconButton size ="small" color='error' onClick={() => {handleDelete (item.id)}}>
                <DeleteOutlineIcon fontSize ="small" />
-             </IconButton>
+             </IconButton> */}
             </Box>
            </Box>
             </Paper>

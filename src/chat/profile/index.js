@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Typography } from '@mui/material'
 import React from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Profile({ user }) {
   const navigate = useNavigate();
