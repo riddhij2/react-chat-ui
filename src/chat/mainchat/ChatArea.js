@@ -6,6 +6,16 @@ import ReplyIcon from '@mui/icons-material/Reply';
 function ChatArea({ allMsg, user, handleDelete }) {
   console.log("allMsg", allMsg)
   console.log("user", user)
+
+  const formatTime = (timestamp) => {
+    const date = new Date(timestamp);
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert to 12-hour format
+    return `${hours}:${minutes} ${ampm}`;
+  };
+  
   return (
     <Box sx={{flex:"1 0 0", overflowY: "auto", bgcolor: "#f9f9f9"}}>
         <Stack direction="row" justifyContent="center" 
@@ -61,7 +71,7 @@ function ChatArea({ allMsg, user, handleDelete }) {
               : {}  
             }
               >
-                12:20 PM
+                {formatTime(item.created_at)}
             </Typography>
             <Box>
              {/* <IconButton size ="small">
