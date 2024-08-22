@@ -5,7 +5,7 @@ import ReplyIcon from '@mui/icons-material/Reply';
 
 function ChatArea({ allMsg, user, handleDelete }) {
   console.log("allMsg", allMsg)
-  console.log("user", user)
+  // console.log("user", user)
 
   const formatTime = (timestamp) => {
     const date = new Date(timestamp);
@@ -24,6 +24,7 @@ function ChatArea({ allMsg, user, handleDelete }) {
         </Stack>
         <List sx= {{p:0, overflowY: "auto", flex: "1 0 0"}}>
           {allMsg.map((item) => (
+            
             
             <ListItem  
             key={item.id}  
@@ -74,12 +75,12 @@ function ChatArea({ allMsg, user, handleDelete }) {
                 {formatTime(item.created_at)}
             </Typography>
             <Box>
-             {/* <IconButton size ="small">
+             <IconButton size ="small">
                <ReplyIcon fontSize ="small" />
              </IconButton>
              <IconButton size ="small" color='error' onClick={() => {handleDelete (item.id)}}>
                <DeleteOutlineIcon fontSize ="small" />
-             </IconButton> */}
+             </IconButton>
             </Box>
            </Box>
             </Paper>

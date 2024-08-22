@@ -61,6 +61,12 @@ const Chat = () => {
         setAllMsg((prevState) => [...prevState, formattedData]);
       });
 
+        // Listen for deleted messages
+        socketRef.current.on("MSG_DELETED", (data) => {
+           console.log("Message Deleted Data:", data);
+           setAllMsg((prevState) => prevState.filter((msg) => msg.id !== data.id));
+        });
+
       return () => socketRef.current.disconnect();
     }
   }, [isConnected]);
@@ -74,38 +80,45 @@ const Chat = () => {
       };
       socketRef.current.emit("SEND_MSG", data);
 
-      const formattedData = formatMessageData({
-        ...data,
-        created_at: new Date().toISOString(),
-      });
+      // const formattedData = formatMessageData({
+      //   ...data,
+      //   created_at: new Date().toISOString(),
+      // });
 
-      console.log(formattedData, "formatted data")
+      // console.log(formattedData, "formatted data")
 
-      setAllMsg((prevState) => [...prevState, formattedData]);
+      // setAllMsg((prevState) => [...prevState, formattedData]);
     }
   };
 
   const handleDelete = (id) => {
-    console.log("id", id)
+    console.log("Deleting message with ID:", id);
+  
     axios
       .delete(`http://localhost:5000/message/${id}`)
       .then((res) => {
-        if (socketRef.current.connected) {
-          
-          const data = {
-            
-            msg: res.data.data,
-            receiver: { ...roomData.receiver },
-          };
-          console.log("RESPONSE ",data)
-          socketRef.current.emit("DELETED_MSG", data);
+        console.log("Delete response:", res.data);
+        if (res.data.success !== false && res.data.data.id) {
+          const deletedMsgId = res.data.data.id;
+  
+          setAllMsg((prevState) => {
+            const newMsgList = prevState.filter((msg) => msg.id !== deletedMsgId);
+            console.log('Updated Message List:', newMsgList);
+            return newMsgList;
+          });
 
-          console.log("Message Deleted Data:", data);
-          setAllMsg((prevState) => prevState.filter((msg) => msg.id !== res.data.data.id));
+           // Emit message deletion to the server
+        if (socketRef.current.connected) {
+          socketRef.current.emit("DELETE_MSG", { id: deletedMsgId });
+        }
+
+        
+          // Test by forcing the state update
+          setAllMsg((prevState) => prevState.filter((msg) => msg.id !== id));
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Error during message deletion:", err);
       });
   };
 

@@ -33,21 +33,29 @@ const socketInit = (server) => {
       addUser(user, socket.id);
       io.emit('USER_ADDED', onlineUsers);
     });
-    socket.on('SEND_MSG', async (msg) => {
-      console.log(msg, 'MSG FROM FRONTEND');
+    // socket.on('SEND_MSG', async (msg) => {
+    //   console.log(msg, 'MSG FROM FRONTEND');
       
-      // Save the message and get the result including the ID
-      const isSaved = await saveMsg(msg);
-      console.log(isSaved, 'Message saved with ID'); // Ensure isSaved contains the ID
+    //   // Save the message and get the result including the ID
+    //   const isSaved = await saveMsg(msg);
+    //   console.log(isSaved, 'Message saved with ID'); // Ensure isSaved contains the ID
   
-      // Emit the saved message to the appropriate sockets
-      io.to(msg.receiver.socketId)
-        .to(msg.sender.socketId)
-        .emit('RECEIVED_MSG', isSaved); // Send the result to the frontend
+    //   // Emit the saved message to the appropriate sockets
+    //   io.to(msg.receiver.socketId)
+    //     .to(msg.sender.socketId)
+    //     .emit('RECEIVED_MSG', isSaved); // Send the result to the frontend
+    socket.on('SEND_MSG', async (data) => {
+          const savedMsg = await saveMsg(data);
+          console.log('Emitting RECEIVED_MSG with:', savedMsg.data);
+          io.emit('RECEIVED_MSG', savedMsg.data);
+        
     });
 
-    socket.on('DELETE_MSG', (msg) => {
-      socket.to(msg.receiver.socketId).emit('DELETED_MSG', msg);
+    socket.on('DELETE_MSG', ({ id }) => {
+
+    console.log("Deleting message with ID:", id);
+      // Broadcast message deletion to all relevant clients
+      io.emit('MSG_DELETED', { id });  // You might need to target specific rooms or users
     });
     socket.on('disconnect', () => {
       removeUser(socket.id);
