@@ -1,5 +1,8 @@
-for mysql database
+for creating mysql database
 
+-- CREATE DATABASE `ai_dashboard`;
+
+for table users
 -- CREATE TABLE `users` (
 --   `id` int NOT NULL AUTO_INCREMENT,
 --   `name` varchar(255) NOT NULL,
@@ -8,7 +11,7 @@ for mysql database
 --   PRIMARY KEY (`id`)
 -- );
 
-
+for table messages
 -- CREATE TABLE IF NOT EXISTS messages (
 --       id INT AUTO_INCREMENT PRIMARY KEY,
 --       msg TEXT NOT NULL,
