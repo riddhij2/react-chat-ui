@@ -11,7 +11,7 @@ const PATH = "http://localhost:5000";
 
 // Helper function to format message data
 const formatMessageData = (data) => {
-  console.log("data", data)
+  // console.log("data", data)
   return {
     id: data.id || null,
     msg: data.msg || "",
@@ -48,23 +48,22 @@ const Chat = () => {
 
   useEffect(() => {
     if (isConnected) {
-      console.log('Setting up socket listener for RECEIVED_MSG');
       socketRef.current.emit("ADD_USER", state);
       socketRef.current.on("USER_ADDED", (data) => {
         setOnlineUsers(data);
       });
       socketRef.current.on("RECEIVED_MSG", (data) => {
-        console.log("Received Message Data:", data); // Check data here
+        // console.log("Received Message Data:", data); // Check data here
   
         const formattedData = formatMessageData(data);
-        console.log("Formatted Data:", formattedData);
+        // console.log("Formatted Data:", formattedData);
         setAllMsg((prevState) => [...prevState, formattedData]);
       });
 
         // Listen for deleted messages
-        socketRef.current.on("MSG_DELETED", (data) => {
-           console.log("Message Deleted Data:", data);
-           setAllMsg((prevState) => prevState.filter((msg) => msg.id !== data.id));
+        socketRef.current.on("DELETED_MSG", (data) => {
+           console.log("Message Deleted Data:", data.msg.id);
+           setAllMsg((prevState) => prevState.filter((item) => item.id !== data.msg.id));
         });
 
       return () => socketRef.current.disconnect();
@@ -80,14 +79,6 @@ const Chat = () => {
       };
       socketRef.current.emit("SEND_MSG", data);
 
-      // const formattedData = formatMessageData({
-      //   ...data,
-      //   created_at: new Date().toISOString(),
-      // });
-
-      // console.log(formattedData, "formatted data")
-
-      // setAllMsg((prevState) => [...prevState, formattedData]);
     }
   };
 
@@ -99,17 +90,21 @@ const Chat = () => {
       .then((res) => {
         console.log("Delete response:", res.data);
         if (res.data.success !== false && res.data.data.id) {
-          const deletedMsgId = res.data.data.id;
-  
-          setAllMsg((prevState) => {
-            const newMsgList = prevState.filter((msg) => msg.id !== deletedMsgId);
-            console.log('Updated Message List:', newMsgList);
-            return newMsgList;
-          });
+         
 
            // Emit message deletion to the server
         if (socketRef.current.connected) {
-          socketRef.current.emit("DELETE_MSG", { id: deletedMsgId });
+          const data = {
+            msg: res.data.data,
+            receiver: roomData.receiver
+          }
+          socketRef.current.emit("DELETE_MSG", data);
+
+          //  setAllMsg((prevState) => {
+          //   const newMsgList = prevState.filter((data) => data.id !== res.data.data.id);
+          //   console.log('Updated Message List:', newMsgList);
+          //   return newMsgList;
+          // });
         }
 
         

@@ -17,7 +17,7 @@ const SideBar= ({ user, onlineUsers, roomData, setRoomData, setAllMsg }) =>{
     }
 
     const handleChatRoom = (user) =>{
-      console.log("user", user)
+      // console.log("user", user)
       setRoomData({
         ...roomData,
         room: "test",
@@ -29,7 +29,7 @@ const SideBar= ({ user, onlineUsers, roomData, setRoomData, setAllMsg }) =>{
       axios
       .get(`http://localhost:5000/message/${user.userId}`)
       .then((res) => {
-        console.log("res",res)
+        // console.log("res",res)
         if (res.data.data) {
           // Update the selected message ID and other state as needed
           setSelectedMessageId(res.data.data.id);
@@ -70,7 +70,7 @@ const SideBar= ({ user, onlineUsers, roomData, setRoomData, setAllMsg }) =>{
             onlineUsers
             .filter((ele) => ele.userId !== user.userId)
             .map((item) => {
-              console.log("Item:", item);
+              // console.log("Item:", item);
              return( 
             <React.Fragment key={item.userId}>
               <ListItem alignItems="flex-start" onClick={() => handleChatRoom(item)}>

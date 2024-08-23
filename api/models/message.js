@@ -49,8 +49,15 @@ const deleteMessageById = async (id) => {
   return result;
 };
 
+// New function to find a message by its ID
+const findMessageById = async (id) => {
+  const [messages] = await pool.execute('SELECT * FROM messages WHERE id = ?', [id]);
+  return messages[0];  // Return the first message in the result
+};
+
 module.exports = {
   saveMessage,
   findMessagesByUserId,
   deleteMessageById,
+  findMessageById,
 };

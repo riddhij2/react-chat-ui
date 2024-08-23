@@ -51,11 +51,11 @@ const socketInit = (server) => {
         
     });
 
-    socket.on('DELETE_MSG', ({ id }) => {
+    socket.on('DELETE_MSG', ({ msg }) => {
 
-    console.log("Deleting message with ID:", id);
+    console.log("Deleting message with ID:", msg);
       // Broadcast message deletion to all relevant clients
-      io.emit('MSG_DELETED', { id });  // You might need to target specific rooms or users
+      io.emit('DELETED_MSG', { msg });  // You might need to target specific rooms or users
     });
     socket.on('disconnect', () => {
       removeUser(socket.id);

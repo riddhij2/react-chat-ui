@@ -75,12 +75,12 @@ function ChatArea({ allMsg, user, handleDelete }) {
                 {formatTime(item.created_at)}
             </Typography>
             <Box>
-             <IconButton size ="small">
+             {/* <IconButton size ="small">
                <ReplyIcon fontSize ="small" />
              </IconButton>
              <IconButton size ="small" color='error' onClick={() => {handleDelete (item.id)}}>
                <DeleteOutlineIcon fontSize ="small" />
-             </IconButton>
+             </IconButton> */}
             </Box>
            </Box>
             </Paper>

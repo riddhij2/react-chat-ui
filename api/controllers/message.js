@@ -1,4 +1,4 @@
-const { saveMessage, findMessagesByUserId, deleteMessageById } = require('../models/message');
+const { saveMessage, findMessagesByUserId, deleteMessageById, findMessageById } = require('../models/message');
 
 const saveMsg = async (data) => {
   console.log('Data to be saved:', data);  // Log the message data
@@ -27,6 +27,7 @@ const getMsg = async (req, res, next) => {
   }
 };
 
+// Fetch the message by ID before deleting it
 const delMsg = async (req, res, next) => {
   const id = req.params.id;
   
@@ -34,8 +35,19 @@ const delMsg = async (req, res, next) => {
     if (!id) {
       return res.status(400).json({ msg: 'Message ID required.' });
     }
+
+    // Find the message to be deleted
+    const message = await findMessageById(id);
+
+    if (!message) {
+      return res.status(404).json({ msg: 'Message not found.' });
+    }
+
+    // Delete the message
     await deleteMessageById(id);
-    res.json({ data: { id }, msg: 'Message deleted' });  // Return the ID of the deleted message
+
+    // Respond with the deleted message content
+    res.json({ data: { id, msg: message.msg }, message: 'Message deleted' });
   } catch (error) {
     next(error);
   }
