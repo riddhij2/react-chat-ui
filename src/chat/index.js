@@ -15,6 +15,7 @@ const formatMessageData = (data) => {
   return {
     id: data.id || null,
     msg: data.msg || "",
+    replyMsg: data.replyMsg || null,
     sender_id: data.sender?.userId || data.sender_id || null,
     sender_name: data.sender?.name || data.sender_name || "",
     receiver_id: data.receiver?.userId || data.receiver_id || null,
@@ -28,6 +29,7 @@ const Chat = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [allMsg, setAllMsg] = useState([]);
+  const [replyMsg, setReplyMsg] = useState(null)
   const [roomData, setRoomData] = useState({
     roomData: null,
     receiver: null,
@@ -77,7 +79,11 @@ const Chat = () => {
         receiver: { ...roomData.receiver },
         sender: { ...state },
       };
+      if(replyMsg){
+        data.replyMsg = replyMsg;
+      }
       socketRef.current.emit("SEND_MSG", data);
+      setReplyMsg(null)
 
     }
   };
@@ -118,6 +124,7 @@ const Chat = () => {
   };
 
   if (!state) return null;
+  console.log(replyMsg)
 
   return (
     <Paper square elevation={0} sx={{ height: "100vh", display: "flex" }}>
@@ -134,6 +141,8 @@ const Chat = () => {
         allMsg={allMsg}
         user={state}
         handleDelete={handleDelete}
+        setReplyMsg = {setReplyMsg}
+        replyMsg = {replyMsg}
       />
       <Profile user={state} />
     </Paper>

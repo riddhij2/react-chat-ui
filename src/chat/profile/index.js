@@ -19,7 +19,7 @@ export default function Profile({ user }) {
         justifyContent: "center",
         alignItems: "center"
         }}>
-      <Avatar src ="https://mui.com/static/images/avatar/2.jpg"
+      <Avatar src ="/static/images/avatar/2.jpg"
         sx={{ width: "156px", height: "156px" }}
       />
       <Typography 

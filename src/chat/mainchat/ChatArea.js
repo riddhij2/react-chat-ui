@@ -3,7 +3,7 @@ import React from 'react'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ReplyIcon from '@mui/icons-material/Reply';
 
-function ChatArea({ allMsg, user, handleDelete }) {
+function ChatArea({ allMsg, user, handleDelete,setReplyMsg }) {
   console.log("allMsg", allMsg)
   // console.log("user", user)
 
@@ -52,6 +52,30 @@ function ChatArea({ allMsg, user, handleDelete }) {
               : {width:"100%", p: 1.5}
               }
           >
+            {item.replyMsg && 
+            <Paper sx ={item.sender_id !== user.userId 
+              ? { p: 1.5, mb: 1, bgcolor: "primary.light"} 
+              : { p: 1.5, mb: 1}
+              }
+          >
+            <ListItemText
+           sx={item.sender_id !== user.userId 
+              ? {m:0, color: "primary.contrastText"} 
+              : {m:0}
+            }
+           primary={item.replyMsg.sender_name}
+           secondary={
+              <Typography
+                variant="caption"
+              >{item.replyMsg.msg}
+              </Typography>
+            }
+          />
+          </Paper>
+          
+          }
+
+
           <ListItemText
            sx={item.sender_id === user.userId 
               ? {m:0, color: "primary.contrastText"} 
@@ -75,12 +99,14 @@ function ChatArea({ allMsg, user, handleDelete }) {
                 {formatTime(item.created_at)}
             </Typography>
             <Box>
-             {/* <IconButton size ="small">
+             <IconButton onClick={() => setReplyMsg(item)} size ="small">
                <ReplyIcon fontSize ="small" />
              </IconButton>
-             <IconButton size ="small" color='error' onClick={() => {handleDelete (item.id)}}>
+             {/* {item.sender_id === user.userId &&
+              <IconButton size ="small" color='error' onClick={() => {handleDelete (item.id)}}>
                <DeleteOutlineIcon fontSize ="small" />
-             </IconButton> */}
+             </IconButton> 
+            } */}
             </Box>
            </Box>
             </Paper>

@@ -1,10 +1,10 @@
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Button, IconButton, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import  InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
+import CloseIcon from '@mui/icons-material/Close';
 
-
-function Footer({ handleSendMsg }) {
+function Footer({ handleSendMsg, replyMsg, setReplyMsg }) {
     const [msg, setMsg] = useState("");
     const handleChange = (event) =>{
         //set the text msg
@@ -21,7 +21,33 @@ function Footer({ handleSendMsg }) {
         
     }
   return (
-    <Box sx={{p:1 , display: "flex"}}>
+    <Box sx={{p:1 , display: "flex",position: "relative"}}>
+        {replyMsg && 
+        (<Box 
+           sx={{
+            position: "absolute", 
+            left: 0, 
+            right: 0, 
+            bottom:"57px", 
+            background:"#ddd",
+            p:1,
+            borderLeft: "4px solid",
+            borderColor: "primary.light"
+            }}
+            >
+                <Typography>
+                    {replyMsg.sender_name}
+                </Typography>
+                <Typography variant='caption'>
+                    {replyMsg.msg}
+                </Typography>
+                <IconButton aria-label="close" 
+                onClick={() => setReplyMsg(null)}
+                    sx ={{position: "absolute", right: 0, top: 0}}>
+                    <CloseIcon />
+                </IconButton>
+        </Box>)
+        }
         <Box sx={{display: "flex", alignItems: "center "}}>
         <Button sx={{minWidth: "auto", mr: 1}}>
             <MoreVertIcon />
