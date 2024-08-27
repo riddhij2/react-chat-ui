@@ -1,9 +1,9 @@
 import { Avatar, Box, Chip, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack, Typography } from '@mui/material'
 import React from 'react'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+// import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ReplyIcon from '@mui/icons-material/Reply';
 
-function ChatArea({ allMsg, user, handleDelete,setReplyMsg }) {
+function ChatArea({ allMsg, user, handleDelete, setReplyMsg }) {
   console.log("allMsg", allMsg)
   // console.log("user", user)
 
