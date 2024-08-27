@@ -15,6 +15,7 @@ CREATE TABLE `users` (
  CREATE TABLE IF NOT EXISTS messages (
   id INT AUTO_INCREMENT PRIMARY KEY,
   msg TEXT NOT NULL,
+  replyMsg JSON,
   sender_id INT NOT NULL,
   sender_name VARCHAR(255) NOT NULL,
   sender_email VARCHAR(255) NOT NULL,
